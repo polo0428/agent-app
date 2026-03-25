@@ -4,12 +4,11 @@ import { useChat } from '@ai-sdk/react';
 import { useState, useRef, useEffect, useMemo } from 'react';
 import { Send, Bot, User, Loader2, AlertCircle } from 'lucide-react';
 import { EvaluationCard } from '@/components/evaluation-card';
+import { ExpertRatings } from '@/components/expert-ratings';
 
 export default function Page() {
   const [input, setInput] = useState('');
-  const { messages, sendMessage, status, error, clearError } = useChat({
-    api: '/api/chat',
-  });
+  const { messages, sendMessage, status, error, clearError } = useChat();
   const scrollRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -173,17 +172,31 @@ export default function Page() {
 
                     if (part.type === 'tool-get_teaching_evaluation') {
                       if (part.state === 'output-available') {
-                        return (
-                          <EvaluationCard
-                            key={i}
-                            {...(part.output as {
-                              name: string;
-                              course: string;
+                        const output = part.output as {
+                          name: string;
+                          course: string;
+                          score: number;
+                          rating: 'excellent' | 'good' | 'needs_improvement';
+                          evaluation: string;
+                          expertRatings?: {
+                            expertName: string;
+                            expertTitle: string;
+                            ratings: {
+                              dimension: string;
                               score: number;
-                              rating: 'excellent' | 'good' | 'needs_improvement';
-                              evaluation: string;
-                            })}
-                          />
+                              maxScore: number;
+                              comment: string;
+                            }[];
+                            overallComment: string;
+                          }[];
+                        };
+                        return (
+                          <div key={i} className="flex flex-col gap-3">
+                            <EvaluationCard {...output} />
+                            {output.expertRatings && output.expertRatings.length > 0 && (
+                              <ExpertRatings expertRatings={output.expertRatings} />
+                            )}
+                          </div>
                         );
                       }
                       if (part.state === 'output-error') {
