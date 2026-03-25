@@ -13,8 +13,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "股票分析助手",
-  description: "基于 AI 的智能股票与期权分析助手",
+  title: "教学质量评价助手",
+  description: "基于 AI 的智能教学质量评价助手",
 };
 
 export default function RootLayout({
