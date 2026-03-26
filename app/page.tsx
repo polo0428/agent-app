@@ -150,10 +150,10 @@ export default function Page() {
           </div>
           <div className="space-y-1">
             {conversations.map(conv => (
-              <button
+              <div
                 key={conv.id}
                 onClick={() => handleSelectConversation(conv)}
-                className={`group flex w-full items-start gap-3 rounded-lg px-3 py-2.5 text-left transition-colors ${
+                className={`group flex w-full items-start gap-3 rounded-lg px-3 py-2.5 text-left transition-colors cursor-pointer ${
                   activeConversationId === conv.id
                     ? 'bg-indigo-50 dark:bg-indigo-950/50'
                     : 'hover:bg-zinc-100 dark:hover:bg-zinc-800'
@@ -185,7 +185,7 @@ export default function Page() {
                 >
                   <Trash2 className="h-4 w-4 text-zinc-400 hover:text-red-500" />
                 </button>
-              </button>
+              </div>
             ))}
           </div>
         </div>
